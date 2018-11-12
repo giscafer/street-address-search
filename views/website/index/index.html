@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+	<link rel="stylesheet" href="/web/mescroll/mescroll.min.css">
+	<link rel="stylesheet" href="/web/layui/css/layui.css">
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-webkit-tap-highlight-color: transparent;
+		}
+
+		body {
+			background-color: white
+		}
+
+		ul {
+			list-style-type: none
+		}
+
+		a {
+			text-decoration: none;
+			color: #18B4FE;
+		}
+
+		/*模拟的标题*/
+		.header {
+			z-index: 9990;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			line-height: 16px;
+			padding-top: 12px;
+			text-align: center;
+			background-color: white;
+		}
+
+		.header .btn-left {
+			position: absolute;
+			top: 0;
+			left: 0;
+			padding: 12px;
+		}
+
+		.header .btn-right {
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: 12px 6px;
+		}
+
+		.header .tip {
+			margin-top: 4px;
+			font-size: 12px;
+			color: gray;
+		}
+
+		/*菜单*/
+		.header .nav {
+			margin-top: 18px;
+			border-bottom: 1px solid #ddd;
+		}
+
+		.header .nav p {
+			display: inline-block;
+			width: 30%;
+			padding: 5px 0;
+		}
+
+		.header .nav .active {
+			border-bottom: 1px solid #FF6990;
+			color: #FF6990;
+		}
+
+		/*列表*/
+		.mescroll {
+			position: fixed;
+			top: 84px;
+			bottom: 0;
+			height: auto;
+		}
+
+		/*展示上拉加载的数据列表*/
+		.data-list li {
+			position: relative;
+			padding: 10px 8px 10px 120px;
+			border-bottom: 1px solid #eee;
+		}
+
+		.data-list .pd-img {
+			position: absolute;
+			left: 18px;
+			top: 18px;
+			width: 80px;
+			height: 80px;
+		}
+
+		.data-list .pd-name {
+			font-size: 16px;
+			line-height: 20px;
+			height: 40px;
+			overflow: hidden;
+		}
+
+		.data-list .pd-price {
+			margin-top: 8px;
+			color: red;
+		}
+
+		.data-list .text {
+			font-size: 14px;
+		}
+
+		.data-list .operate-btn {
+			font-size: 14px;
+			position: absolute;
+			right: 25px;
+			top: 10px;
+			padding: 1px 5px;
+			border: solid 1px #18B4FE
+		}
+
+		.data-list .car-type {
+			position: absolute;
+			left: 25px;
+			top: 110px;
+			color: red;
+		}
+
+		.data-list .pd-sold {
+			font-size: 12px;
+			margin-top: 8px;
+			color: gray;
+		}
+
+		.layui-form-item .layui-form-text {
+			padding: 10px 100px;
+		}
+
+		.mobile {
+			display: none;
+		}
+
+		.pc {
+			display: inline-block;
+		}
+
+		@media screen and (max-width: 750px) {
+			.input {
+				width: 100%
+			}
+
+			.layui-form-text {
+				padding: 10px;
+			}
+
+			.mobile {
+				display: inline-block;
+				width: 100px;
+			}
+
+			.pc {
+				display: none;
+			}
+		}
+	</style>
+	<style type="text/css">
+		#voice {
+			position: relative;
+			width: 100px;
+			display: inline-block;
+			height: 20px;
+			margin: 5px auto;
+			display: none;
+		}
+
+		#voice span {
+			width: 5px;
+			height: 5px;
+			top: 0px;
+			position: absolute;
+			background: red;
+			-webkit-animation: bodong 0.5s infinite ease;
+		}
+
+		#voice span:first-child {
+			left: 0px;
+			-webkit-animation-delay: .3s;
+		}
+
+		#voice span:nth-child(2) {
+			left: 7px;
+			-webkit-animation-delay: .4s;
+
+		}
+
+		#voice span:nth-child(3) {
+			left: 14px;
+			-webkit-animation-delay: .6s;
+		}
+
+		#voice span:nth-child(4) {
+			left: 21px;
+			-webkit-animation-delay: .8s;
+		}
+
+		#voice span:nth-child(5) {
+			left: 28px;
+			-webkit-animation-delay: 1s;
+		}
+
+		@-webkit-keyframes bodong {
+			0% {
+				height: 5px;
+				background: bule;
+			}
+
+			30% {
+				height: 15px;
+				background: bule;
+			}
+
+			60% {
+				height: 20px;
+				background: bule;
+			}
+
+			80% {
+				height: 15px;
+				background: bule;
+			}
+
+			100% {
+				height: 5px;
+				background: bule;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<!--标题-->
+	<div class="header">
+		<!-- <a class="btn-left" href="/">首页</a> -->
+		<p>详细地址智能匹配四级地址</p>
+		<p class="tip">支持语音识别</p>
+		<!-- <a class="btn-right" href="/order_list">列表模式</a> -->
+		<!--菜单-->
+		<div class="nav">
+			<p class="active" i="0">语音识别</p>
+			<p i="1">手工录入</p>
+		</div>
+		<div class="layui-form-item layui-form-text" style="margin-top:10px;">
+			<div class="input">
+				<textarea placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<button id="pressbtn" class="layui-btn mobile">长按录音</button>
+			<button id="recordbtn" class="layui-btn pc">开始录音</button>
+			<button id="stopRecordbtn" class="layui-btn pc layui-btn-disabled">结束录音</button>
+			<p class="tip" id="info"></p>
+		</div>
+		<div class="layui-form-item" id='voice'>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+	</div>
+	<!--滑动区域-->
+	<div id="mescroll" class="mescroll">
+		<!--展示上拉加载的数据列表-->
+		<ul id="dataList" class="data-list">
+			<pre id="log"></pre>
+			<h2>Recordings</h2>
+			<ul id="recordingslist"></ul>
+		</ul>
+	</div>
+</body>
+
+<script type="text/javascript" src="/web/js/recorder.js"></script>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="/web/layui/layui.js"></script>
+<script type="text/javascript" charset="utf-8">
+	$(function () {
+		layui.config({
+			base: '/web/layui/modules/'
+		});
+
+		layui.use(['laypage', 'layer'], function () {
+			var $ = layui.jquery,
+				laypage = layui.laypage,
+				layer = parent.layer === undefined ? layui.layer : parent.layer;
+			/*初始化菜单*/
+			var pdType = 0;//全部商品0; 奶粉1; 面膜2; 图书3;
+			$(".nav p").click(function () {
+				var i = $(this).attr("i");
+				if (pdType != i) {
+					//更改列表条件
+					pdType = i;
+					$(".nav .active").removeClass("active");
+					$(this).addClass("active");
+				}
+			})
+
+			/*设置列表数据*/
+			function setListData(curPageData) {
+				var listDom = document.getElementById("dataList");
+				for (var i = 0; i < curPageData.length; i++) {
+					var pd = curPageData[i];
+					var str = '<img class="pd-img" src="/web/images/services/service1.png"/>';
+					str += '<span class="car-type">' + pd.carType + '</span>';
+					if (pd.status == 0) {
+						str += '<span class="operate-btn"><a href="javascript:void(0)" class="deal-order" id="' + pd._id + '">处理</a></span>';
+					}
+					str += '<p class="name">姓名：' + pd.name + '</p>';
+					str += '<p class="phone">联系电话：<a href="tel:' + pd.phone + '"/>' + pd.phone + '</a></p>';
+					str += '<p class="text" style="margin-top:5px;">公司：' + pd.company + '</p>';
+					str += '<p class="text">出发地点：' + pd.startPoint + '</p>';
+					str += '<p class="text">出发时间：' + pd.startTime + '</p>';
+					str += '<p class="pd-sold">预定时间：' + pd.createTime + '</p>';
+					str += '<p class="pd-sold">备注：' + pd.mark + '</p>';
+
+					var liDom = document.createElement("li");
+					liDom.setAttribute('id', pd._id);
+					liDom.innerHTML = str;
+					listDom.appendChild(liDom);
+				}
+			}
+
+
+
+
+
+			function recognizeRecord(blob) {
+				var xhr = new XMLHttpRequest();
+				var formdata = new FormData();
+				formdata.append('voicefile', blob);
+				xhr.open('post', '/web/recogizeRecordByBase64');
+				var loadlayer = layer.msg('语音识别中……', {
+					time: 30000
+				});
+				xhr.onreadystatechange = function () {
+					if (xhr.readyState == 4 && xhr.status == 200) {
+						var jsonData = JSON.parse(xhr.responseText);
+						if (jsonData.status === 'success') {
+							console.log(jsonData.data);
+							return;
+						}
+						layer.close(loadlayer);
+						layer.msg(jsonData.err.err_msg, {
+							icon: 2,
+							time: 3000
+						});
+					}
+				};
+				xhr.send(formdata);
+			}
+
+			// 录音
+
+			function __log(e, data) {
+				log.innerHTML += "\n" + e + " " + (data || '');
+			}
+
+			var audio_context;
+			var recorder;
+
+			function startUserMedia(stream) {
+				var input = audio_context.createMediaStreamSource(stream);
+				__log('Media stream created.');
+
+				// Uncomment if you want the audio to feedback directly
+				//input.connect(audio_context.destination);
+				//__log('Input connected to audio context destination.');
+
+				recorder = new Recorder(input);
+				__log('Recorder initialised.');
+			}
+
+			var timeOutEvent = 0;
+			$("#pressbtn").on({
+				touchstart: function (e) {
+					$('#info').html("");
+					timeOutEvent = setTimeout(function () {
+						$('#voice').show()
+						timeOutEvent = 0;
+						recorder && recorder.record();
+					}, 500);
+					e.preventDefault();
+				},
+				touchend: function () {
+					clearTimeout(timeOutEvent);
+					if (timeOutEvent != 0) {
+						$('#info').html("你这是点击，不是长按");
+						return;
+					}
+					$('#voice').hide()
+					recorder && recorder.stop();
+					// create WAV download link using audio data blob
+					createDownloadLink();
+					recorder.clear();
+
+					return false;
+				}
+			})
+
+
+			$('#recordbtn').click(function ($event) {
+				var button = $(this)[0];
+				$('#voice').show()
+				startRecording(button);
+			});
+
+			$("#stopRecordbtn").click(function ($event) {
+				var button = $(this)[0];
+				stopRecording(button);
+				$('#voice').hide()
+			});
+
+			function startRecording(button) {
+				recorder && recorder.record();
+				$(button).addClass('layui-btn-disabled');
+				$('#stopRecordbtn').removeClass('layui-btn-disabled');
+				__log('Recording...');
+			}
+
+			function stopRecording(button) {
+				recorder && recorder.stop();
+				$(button).addClass('layui-btn-disabled');
+				$('#recordbtn').removeClass('layui-btn-disabled');
+				__log('Stopped recording.');
+
+				// create WAV download link using audio data blob
+				createDownloadLink();
+
+				recorder.clear();
+			}
+
+			function createDownloadLink() {
+				recorder && recorder.exportWAV(function (blob) {
+					var url = URL.createObjectURL(blob);
+					recognizeRecord(blob)
+					var li = document.createElement('li');
+					var au = document.createElement('audio');
+					var hf = document.createElement('a');
+
+					au.controls = true;
+					au.src = url;
+					hf.href = url;
+					hf.download = new Date().toISOString() + '.wav';
+					hf.innerHTML = hf.download;
+					li.appendChild(au);
+					li.appendChild(hf);
+					recordingslist.appendChild(li);
+				});
+			}
+
+			window.onload = function init() {
+				try {
+					// webkit shim
+					window.AudioContext = window.AudioContext || window.webkitAudioContext;
+					navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+					window.URL = window.URL || window.webkitURL;
+
+					audio_context = new AudioContext;
+					__log('Audio context set up.');
+					__log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
+				} catch (e) {
+					alert('No web audio support in this browser!');
+				}
+
+				navigator.getUserMedia({ audio: true }, startUserMedia, function (e) {
+					__log('No live audio input: ' + e);
+				});
+			};
+
+		});
+	});
+
+
+
+</script>
+
+</html>
