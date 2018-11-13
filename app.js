@@ -1,11 +1,11 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var session = require('express-session');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,8 +21,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //这里周期只设置为20秒，为了方便测试
-//secret在正式用的时候务必修改
-//express中间件顺序要和下面一致
 app.use(session({//session持久化配置
     secret: "giscafer",
     key: "giscafer",
@@ -32,7 +30,7 @@ app.use(session({//session持久化配置
 }));
 
 //ueditor上传图片
-app.use("//ue", (path.join(__dirname, 'public'), function (req, res, next) {
+app.use("//ue", (path.join(__dirname, 'public'), (req, res, next) => {
 
     // console.log('config.json')
     res.setHeader('Content-Type', 'application/json');
@@ -43,8 +41,8 @@ app.use("//ue", (path.join(__dirname, 'public'), function (req, res, next) {
 require('./routes/index')(app);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    var err = new Error('Not Found');
+app.use((req, res, next) => {
+    const err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
@@ -53,7 +51,7 @@ app.use(function (req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
+    app.use((err, req, res, next) => {
         res.status(err.status || 500);
         res.render('website/index/error', {
             message: err.message,
@@ -64,7 +62,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.render('website/index/error', {
         message: err.message,

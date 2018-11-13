@@ -1,12 +1,16 @@
 
-// 2018-11-12 21:39:43
+/**
+ * @author: giscafer ,https://github.com/giscafer
+ * @date: 2018-11-12 22:41:34
+ * @description: 
+ */
 
-var formidable = require('formidable');
-var fs = require('fs');
-var speech = require('../../voice/recognize');
 
-var Moment = require('moment');
-var Email = require('../mail/mail');
+const formidable = require('formidable');
+const fs = require('fs');
+const speech = require('../../voice/recognize');
+const geocode = require('../../module/geocode');
+
 
 // 首页
 exports.index = function (req, res) {
@@ -14,12 +18,12 @@ exports.index = function (req, res) {
 };
 
 // 识别base64音频文件
-exports.recogizeRecordByBase64 = function (req, res) {
+exports.recognizeVoice = function (req, res) {
 
     // parse a file upload
-    var form = new formidable.IncomingForm();
-    form.parse(req, function (err, fields, files) {
-        var voicefile = files['voicefile'];
+    const form = new formidable.IncomingForm();
+    form.parse(req, (err, fields, files) => {
+        const voicefile = files['voicefile'];
         console.log(voicefile)
         let voice = fs.readFileSync(voicefile.path);
         // fs.writeFileSync('voice/test.wav', voice);
@@ -37,7 +41,6 @@ exports.recogizeRecordByBase64 = function (req, res) {
     });
 
     return;
-
 };
 
 

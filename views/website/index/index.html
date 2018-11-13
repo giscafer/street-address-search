@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-	<meta name="apple-mobile-web-app-capable" content="yes">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,
+			initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
 
-	<link rel="stylesheet" href="/web/mescroll/mescroll.min.css">
-	<link rel="stylesheet" href="/web/layui/css/layui.css">
-	<style type="text/css">
+		<link rel="stylesheet" href="/web/mescroll/mescroll.min.css">
+		<link rel="stylesheet" href="/web/layui/css/layui.css">
+		<style type="text/css">
 		* {
 			margin: 0;
 			padding: 0;
@@ -172,7 +173,7 @@
 			}
 		}
 	</style>
-	<style type="text/css">
+		<style type="text/css">
 		#voice {
 			position: relative;
 			width: 100px;
@@ -244,54 +245,63 @@
 			}
 		}
 	</style>
-</head>
+	</head>
 
-<body>
-	<!--标题-->
-	<div class="header">
-		<!-- <a class="btn-left" href="/">首页</a> -->
-		<p>详细地址智能匹配四级地址</p>
-		<p class="tip">支持语音识别</p>
-		<!-- <a class="btn-right" href="/order_list">列表模式</a> -->
-		<!--菜单-->
-		<div class="nav">
-			<p class="active" i="0">语音识别</p>
-			<p i="1">手工录入</p>
-		</div>
-		<div class="layui-form-item layui-form-text" style="margin-top:10px;">
-			<div class="input">
-				<textarea placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>
+	<body>
+		<!--标题-->
+		<div class="header">
+			<!-- <a class="btn-left" href="/">首页</a> -->
+			<p>详细地址智能匹配四级地址</p>
+			<p class="tip">支持语音识别</p>
+			<!-- <a class="btn-right" href="/order_list">列表模式</a> -->
+			<!--菜单-->
+			<div class="nav">
+				<p class="active" i="0">语音识别</p>
+				<p i="1">手工录入</p>
+			</div>
+			<div class="layui-form-item layui-form-text" style="margin-top:10px;">
+				<div class="input">
+					<textarea placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<button id="pressbtn" class="layui-btn mobile">长按录音</button>
+				<button id="recordbtn" class="layui-btn pc">开始录音</button>
+				<button id="stopRecordbtn" class="layui-btn pc layui-btn-disabled">结束录音</button>
+				<p class="tip" id="info"></p>
+			</div>
+			<div class="layui-form-item" id='voice'>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
 			</div>
 		</div>
-		<div class="layui-form-item">
-			<button id="pressbtn" class="layui-btn mobile">长按录音</button>
-			<button id="recordbtn" class="layui-btn pc">开始录音</button>
-			<button id="stopRecordbtn" class="layui-btn pc layui-btn-disabled">结束录音</button>
-			<p class="tip" id="info"></p>
+		<!--滑动区域-->
+		<div id="mescroll" class="mescroll" style="top: 324px;">
+			<!--展示上拉加载的数据列表-->
+			<ul id="dataList" class="data-list">
+				<pre id="log"></pre>
+				<!-- <h2>Recordings</h2>
+				<ul id="recordingslist"></ul> -->
+			</ul>
 		</div>
-		<div class="layui-form-item" id='voice'>
-			<span></span>
-			<span></span>
-			<span></span>
-			<span></span>
-			<span></span>
-		</div>
-	</div>
-	<!--滑动区域-->
-	<div id="mescroll" class="mescroll">
-		<!--展示上拉加载的数据列表-->
-		<ul id="dataList" class="data-list">
-			<pre id="log"></pre>
-			<h2>Recordings</h2>
-			<ul id="recordingslist"></ul>
-		</ul>
-	</div>
-</body>
+	</body>
 
-<script type="text/javascript" src="/web/js/recorder.js"></script>
-<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" src="/web/layui/layui.js"></script>
-<script type="text/javascript" charset="utf-8">
+	<script type="text/javascript" src="/web/js/recorder.js"></script>
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"
+		type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="/web/layui/layui.js"></script>
+	<script type="text/javascript" charset="utf-8">
+			var audio_context;
+			var recorder;
+
+			// 录音
+
+			function __log(e, data) {
+				console.log("\n" + e + " " + (data || ''))
+			}
 	$(function () {
 		layui.config({
 			base: '/web/layui/modules/'
@@ -346,7 +356,7 @@
 				var xhr = new XMLHttpRequest();
 				var formdata = new FormData();
 				formdata.append('voicefile', blob);
-				xhr.open('post', '/web/recogizeRecordByBase64');
+				xhr.open('post', '/web/recognizeVoice');
 				var loadlayer = layer.msg('语音识别中……', {
 					time: 30000
 				});
@@ -367,26 +377,6 @@
 				xhr.send(formdata);
 			}
 
-			// 录音
-
-			function __log(e, data) {
-				log.innerHTML += "\n" + e + " " + (data || '');
-			}
-
-			var audio_context;
-			var recorder;
-
-			function startUserMedia(stream) {
-				var input = audio_context.createMediaStreamSource(stream);
-				__log('Media stream created.');
-
-				// Uncomment if you want the audio to feedback directly
-				//input.connect(audio_context.destination);
-				//__log('Input connected to audio context destination.');
-
-				recorder = new Recorder(input);
-				__log('Recorder initialised.');
-			}
 
 			var timeOutEvent = 0;
 			$("#pressbtn").on({
@@ -466,7 +456,27 @@
 				});
 			}
 
-			window.onload = function init() {
+			
+
+		});
+	});
+
+
+			
+
+			function startUserMedia(stream) {
+				var input = audio_context.createMediaStreamSource(stream);
+				__log('Media stream created.');
+
+				// Uncomment if you want the audio to feedback directly
+				//input.connect(audio_context.destination);
+				//__log('Input connected to audio context destination.');
+
+				recorder = new Recorder(input);
+				__log('Recorder initialised.');
+			}
+
+		window.onload = function init() {
 				try {
 					// webkit shim
 					window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -476,20 +486,19 @@
 					audio_context = new AudioContext;
 					__log('Audio context set up.');
 					__log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
+
+					navigator.getUserMedia({ audio: true }, startUserMedia, function (e) {
+						__log('No live audio input: ' + e);
+						$('#log').html('录音无法使用：' + e)
+
+					});
 				} catch (e) {
-					alert('No web audio support in this browser!');
+					alert('该浏览器不支持录音!');
+					$('#log').html('该浏览器不支持录音')
 				}
 
-				navigator.getUserMedia({ audio: true }, startUserMedia, function (e) {
-					__log('No live audio input: ' + e);
-				});
+				
 			};
 
-		});
-	});
-
-
-
 </script>
-
 </html>

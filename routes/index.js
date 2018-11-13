@@ -6,5 +6,5 @@ module.exports = function (app) {
   // 
   app.get('/', Index.index);
 
-  app.post('/web/recogizeRecordByBase64', Index.recogizeRecordByBase64);
+  app.post('/web/recognizeVoice', Index.recognizeVoice);
 };
