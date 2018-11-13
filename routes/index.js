@@ -7,4 +7,6 @@ module.exports = function (app) {
   app.get('/', Index.index);
 
   app.post('/web/recognizeVoice', Index.recognizeVoice);
+
+  app.post('/web/geocode', Index.geocode);
 };

@@ -31,17 +31,35 @@ exports.recognizeVoice = function (req, res) {
         speech.recognize(voiceBuffer).then(json => {
             console.log(JSON.stringify(json));
             if (json.err_no === 0) {
-                res.send({ status: 'success', data: result });
+                res.send({ status: 'success', data: json });
+               /*  let result = json.result;
+                console.log(result.join('')) 
+                geocode(result.join('')).then(address => {
+                    return res.send({ status: 'success', data: address });
+                }).catch(err => {
+                    return res.send({ status: 'fail', err: err, msg: '高德地图api调用失败!' });
+                }); */
             }
-            res.send({ status: 'fail', err: json });
+            return res.send({ status: 'fail', err: json });
         }).catch(err => {
             console.log(err);
-            res.send({ status: 'fail', err: err });
+            return res.send({ status: 'fail', err: err });
         })
     });
 
     return;
 };
+
+
+exports.geocode = function (req, res) {
+    const addressText = req.body.addressText;
+    const city = req.body.city;
+    geocode(addressText, city).then(result => {
+        return res.send(result);
+    }).catch(err => {
+        return res.send({ status: 'fail', err: err, msg: '高德地图api调用失败!' });
+    });
+}
 
 
 

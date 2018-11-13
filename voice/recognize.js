@@ -20,9 +20,9 @@ let voiceBuffer = new Buffer(voice);
 }); */
 
 
-exports.recognize = function (voiceBuffer) {
+exports.recognize = function (voice) {
     return new Promise((resolve, reject) => {
-        return client.recognize(voiceBuffer, 'wav', 16000).then(function (result) {
+        return client.recognize(voice, 'wav', 16000).then(function (result) {
             return resolve(result);
         }, function (err) {
             return resolve(err);

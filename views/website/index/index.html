@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width,
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,
 			initial-scale=1,maximum-scale=1,user-scalable=no">
-		<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
 
-		<link rel="stylesheet" href="/web/mescroll/mescroll.min.css">
-		<link rel="stylesheet" href="/web/layui/css/layui.css">
-		<style type="text/css">
+	<link rel="stylesheet" href="/web/mescroll/mescroll.min.css">
+	<link rel="stylesheet" href="/web/layui/css/layui.css">
+	<style type="text/css">
 		* {
 			margin: 0;
 			padding: 0;
@@ -96,7 +96,7 @@
 			border-bottom: 1px solid #eee;
 		}
 
-		.data-list .pd-img {
+		.data-list .addr-img {
 			position: absolute;
 			left: 18px;
 			top: 18px;
@@ -104,14 +104,14 @@
 			height: 80px;
 		}
 
-		.data-list .pd-name {
+		.data-list .addr-name {
 			font-size: 16px;
 			line-height: 20px;
 			height: 40px;
 			overflow: hidden;
 		}
 
-		.data-list .pd-price {
+		.data-list .addr-price {
 			margin-top: 8px;
 			color: red;
 		}
@@ -136,7 +136,7 @@
 			color: red;
 		}
 
-		.data-list .pd-sold {
+		.data-list .addr-sold {
 			font-size: 12px;
 			margin-top: 8px;
 			color: gray;
@@ -173,7 +173,7 @@
 			}
 		}
 	</style>
-		<style type="text/css">
+	<style type="text/css">
 		#voice {
 			position: relative;
 			width: 100px;
@@ -245,63 +245,64 @@
 			}
 		}
 	</style>
-	</head>
+</head>
 
-	<body>
-		<!--标题-->
-		<div class="header">
-			<!-- <a class="btn-left" href="/">首页</a> -->
-			<p>详细地址智能匹配四级地址</p>
-			<p class="tip">支持语音识别</p>
-			<!-- <a class="btn-right" href="/order_list">列表模式</a> -->
-			<!--菜单-->
-			<div class="nav">
-				<p class="active" i="0">语音识别</p>
-				<p i="1">手工录入</p>
-			</div>
-			<div class="layui-form-item layui-form-text" style="margin-top:10px;">
-				<div class="input">
-					<textarea placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>
-				</div>
-			</div>
-			<div class="layui-form-item">
-				<button id="pressbtn" class="layui-btn mobile">长按录音</button>
-				<button id="recordbtn" class="layui-btn pc">开始录音</button>
-				<button id="stopRecordbtn" class="layui-btn pc layui-btn-disabled">结束录音</button>
-				<p class="tip" id="info"></p>
-			</div>
-			<div class="layui-form-item" id='voice'>
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
+<body>
+	<!--标题-->
+	<div class="header">
+		<!-- <a class="btn-left" href="/">首页</a> -->
+		<p>详细地址智能匹配四级地址</p>
+		<p class="tip">支持语音识别</p>
+		<!-- <a class="btn-right" href="/order_list">列表模式</a> -->
+		<!--菜单-->
+		<div class="nav">
+			<p class="active" i="0">语音识别</p>
+			<p i="1">手工录入</p>
+		</div>
+		<div class="layui-form-item layui-form-text" style="margin-top:10px;">
+			<div class="input">
+				<textarea placeholder="请输入内容" class="layui-textarea" name="desc" id="result-text"></textarea>
 			</div>
 		</div>
-		<!--滑动区域-->
-		<div id="mescroll" class="mescroll" style="top: 324px;">
-			<!--展示上拉加载的数据列表-->
-			<ul id="dataList" class="data-list">
-				<pre id="log"></pre>
-				<!-- <h2>Recordings</h2>
-				<ul id="recordingslist"></ul> -->
-			</ul>
+		<div class="layui-form-item">
+			<button id="pressbtn" class="layui-btn mobile">长按录音</button>
+			<button id="recordbtn" class="layui-btn pc">开始录音</button>
+			<button id="stopRecordbtn" class="layui-btn pc layui-btn-disabled">结束录音</button>
+			<p class="tip" id="info"></p>
 		</div>
-	</body>
+		<div class="layui-form-item" id='voice'>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+	</div>
+	<!--滑动区域-->
+	<div id="mescroll" class="mescroll" style="top: 324px;">
+		<!--展示上拉加载的数据列表-->
+		<ul id="dataList" class="data-list">
+			<pre id="log"></pre>
+			<h2> 结果</h2>
+			<ul id="addressList"></ul>
+			<h2>Recordings</h2>
+			<ul id="recordingslist"></ul>
+		</ul>
+	</div>
+</body>
 
-	<script type="text/javascript" src="/web/js/recorder.js"></script>
-	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"
-		type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript" src="/web/layui/layui.js"></script>
-	<script type="text/javascript" charset="utf-8">
-			var audio_context;
-			var recorder;
+<script type="text/javascript" src="/web/js/recorder.js"></script>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="/web/layui/layui.js"></script>
+<script type="text/javascript" charset="utf-8">
+	var audio_context;
+	var recorder;
 
-			// 录音
+	// 录音
 
-			function __log(e, data) {
-				console.log("\n" + e + " " + (data || ''))
-			}
+	function __log(e, data) {
+		console.log("\n" + e + " " + (data || ''))
+	}
 	$(function () {
 		layui.config({
 			base: '/web/layui/modules/'
@@ -324,32 +325,21 @@
 			})
 
 			/*设置列表数据*/
-			function setListData(curPageData) {
-				var listDom = document.getElementById("dataList");
-				for (var i = 0; i < curPageData.length; i++) {
-					var pd = curPageData[i];
-					var str = '<img class="pd-img" src="/web/images/services/service1.png"/>';
-					str += '<span class="car-type">' + pd.carType + '</span>';
-					if (pd.status == 0) {
-						str += '<span class="operate-btn"><a href="javascript:void(0)" class="deal-order" id="' + pd._id + '">处理</a></span>';
-					}
-					str += '<p class="name">姓名：' + pd.name + '</p>';
-					str += '<p class="phone">联系电话：<a href="tel:' + pd.phone + '"/>' + pd.phone + '</a></p>';
-					str += '<p class="text" style="margin-top:5px;">公司：' + pd.company + '</p>';
-					str += '<p class="text">出发地点：' + pd.startPoint + '</p>';
-					str += '<p class="text">出发时间：' + pd.startTime + '</p>';
-					str += '<p class="pd-sold">预定时间：' + pd.createTime + '</p>';
-					str += '<p class="pd-sold">备注：' + pd.mark + '</p>';
+			function setListData(addr) {
+				var listDom = document.getElementById("addressList");
 
-					var liDom = document.createElement("li");
-					liDom.setAttribute('id', pd._id);
-					liDom.innerHTML = str;
-					listDom.appendChild(liDom);
-				}
+				var str = '<p class="name">' + addr.province + addr.district + addr.township + '</p>';
+				// str += '<p class="addr-sold">备注：' + addr.mark + '</p>';
+
+				var liDom = document.createElement("li");
+				liDom.setAttribute('id', addr._id);
+				liDom.innerHTML = str;
+				listDom.appendChild(liDom);
 			}
 
 
 			function recognizeRecord(blob) {
+				$('#result-text').val('')
 				var xhr = new XMLHttpRequest();
 				var formdata = new FormData();
 				formdata.append('voicefile', blob);
@@ -359,12 +349,18 @@
 				});
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState == 4 && xhr.status == 200) {
+						layer.close(loadlayer);
 						var jsonData = JSON.parse(xhr.responseText);
 						if (jsonData.status === 'success') {
 							console.log(jsonData.data);
+							if (jsonData.data.result) {
+								var keyword = jsonData.data.result.join(',');
+								$('#result-text').val(keyword);
+								queryAddr(keyword)
+							}
+
 							return;
 						}
-						layer.close(loadlayer);
 						layer.msg(jsonData.err.err_msg, {
 							icon: 2,
 							time: 3000
@@ -374,10 +370,43 @@
 				xhr.send(formdata);
 			}
 
+			function queryAddr(keyword) {
+				var geolayer = layer.msg('地址查询中……', {
+					time: 30000
+				});
+				$.ajax({
+					type: 'POST',
+					url: '/web/geocode',
+					data: {
+						addressText: keyword
+					},
+					dataType: 'json',
+					success: function (result) {
+						layer.close(geolayer);
+						if (result.status === 'success') {
+							return setListData(result.data);
+						}
+						layer.msg('地址查询失败', {
+							icon: 2,
+							time: 3000
+						});
+					},
+					error: function (err) {
+						layer.close(geolayer);
+						console.log(err);
+						layer.msg('地址查询失败', {
+							icon: 2,
+							time: 3000
+						});
+					}
+				});
+
+			}
 
 			var timeOutEvent = 0;
 			$("#pressbtn").on({
 				touchstart: function (e) {
+					$('#result-text').val('')
 					$('#info').html("");
 					timeOutEvent = setTimeout(function () {
 						$('#voice').show()
@@ -453,49 +482,50 @@
 				});
 			}
 
-			
+
 
 		});
 	});
 
 
-			
 
-			function startUserMedia(stream) {
-				var input = audio_context.createMediaStreamSource(stream);
-				__log('Media stream created.');
 
-				// Uncomment if you want the audio to feedback directly
-				//input.connect(audio_context.destination);
-				//__log('Input connected to audio context destination.');
+	function startUserMedia(stream) {
+		var input = audio_context.createMediaStreamSource(stream);
+		__log('Media stream created.');
 
-				recorder = new Recorder(input);
-				__log('Recorder initialised.');
-			}
+		// Uncomment if you want the audio to feedback directly
+		//input.connect(audio_context.destination);
+		//__log('Input connected to audio context destination.');
 
-		window.onload = function init() {
-				try {
-					// webkit shim
-					window.AudioContext = window.AudioContext || window.webkitAudioContext;
-					navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
-					window.URL = window.URL || window.webkitURL;
+		recorder = new Recorder(input);
+		__log('Recorder initialised.');
+	}
 
-					audio_context = new AudioContext;
-					__log('Audio context set up.');
-					__log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
+	window.onload = function init() {
+		try {
+			// webkit shim
+			window.AudioContext = window.AudioContext || window.webkitAudioContext;
+			navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+			window.URL = window.URL || window.webkitURL;
 
-					navigator.getUserMedia({ audio: true }, startUserMedia, function (e) {
-						__log('No live audio input: ' + e);
-						$('#log').html('录音无法使用：' + e)
+			audio_context = new AudioContext;
+			__log('Audio context set up.');
+			__log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
 
-					});
-				} catch (e) {
-					alert('该浏览器不支持录音!');
-					$('#log').html('该浏览器不支持录音')
-				}
+			navigator.getUserMedia({ audio: true }, startUserMedia, function (e) {
+				__log('No live audio input: ' + e);
+				$('#log').html('录音无法使用：' + e)
 
-				
-			};
+			});
+		} catch (e) {
+			alert('该浏览器不支持录音!');
+			$('#log').html('该浏览器不支持录音')
+		}
+
+
+	};
 
 </script>
+
 </html>

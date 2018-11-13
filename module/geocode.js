@@ -28,10 +28,10 @@ const getRegeoUrl = (location) => {
 const resultHandler = (result = {}, err) => {
 
     return err ? {
-        status: 0,
+        status: 'fail',
         error: err
     } : {
-            status: 1,
+            status: 'success',
             data: {
                 ...result
             }
