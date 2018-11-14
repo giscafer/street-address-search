@@ -1,7 +1,7 @@
-let fs = require('fs');
-const client = require('./client');
+let fs = require("fs");
+const client = require("./client");
 
-let voice = fs.readFileSync('./voice/assets/16k.wav');
+let voice = fs.readFileSync("./voice/assets/16k.wav");
 
 let voiceBuffer = new Buffer(voice);
 
@@ -19,13 +19,15 @@ let voiceBuffer = new Buffer(voice);
     console.log(err);
 }); */
 
-
-exports.recognize = function (voice) {
-    return new Promise((resolve, reject) => {
-        return client.recognize(voice, 'wav', 16000).then(function (result) {
-            return resolve(result);
-        }, function (err) {
-            return resolve(err);
-        });
-    })
-}
+exports.recognize = function(voice) {
+  return new Promise((resolve, reject) => {
+    return client.recognize(voice, "wav", 16000).then(
+      function(result) {
+        return resolve(result);
+      },
+      function(err) {
+        return resolve(err);
+      }
+    );
+  });
+};
